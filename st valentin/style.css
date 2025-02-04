@@ -1,0 +1,43 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: rgba(255, 0, 191, 0.712);
+    position: relative;
+    overflow: hidden; /* Empêche les boutons de sortir de l’écran */
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    background-color: aliceblue;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, top 0.5s ease, left 0.5s ease;
+    position: relative; /* Position de base */
+    margin: 0 15px;
+}
+
+button:hover {
+    transform: scale(1.1); /* Effet de zoom au survol */
+}
+
+#buttonOui {
+    background-color: #90ee90; /* Vert clair pour le bouton "oui" */
+}
+
+#buttonOui:hover {
+    background-color: #32cd32; /* Vert plus vif au survol */
+}
+
+#buttonNon {
+    background-color: #ffcccb; /* Rouge clair pour le bouton "non" */
+}
+
+#buttonNon:hover {
+    background-color: #ff6961; /* Rouge plus vif au survol */
+}
