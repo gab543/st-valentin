@@ -1,3 +1,14 @@
+// --- PERSONNALISATION VIA LE LIEN ---
+const urlParams = new URLSearchParams(window.location.search);
+const playerName = urlParams.get('name') || "toi";
+const gender = urlParams.get('gender') || "x"; // f, m, x
+
+// Petits ajustements de texte selon genre
+let crushWord = "mon amour";
+if (gender === "m") crushWord = "mon valentin";
+if (gender === "f") crushWord = "ma valentine";
+
+
 // --- PERSONNAGE SVG ---
 const getCharacterSVG = (state = 'normal') => {
     const isSad = state === 'sad';
@@ -132,6 +143,8 @@ function closeTutorial() {
 }
 
 window.addEventListener('load', () => {
+    document.getElementById('main-title').innerText =
+        `${playerName}… veux-tu être ${crushWord} ? 💘`;
     showTutorial(
         "Épreuve 1 💘",
         "Essaie de cliquer sur NON 😏… ou choisis la bonne réponse 💖"
@@ -233,7 +246,7 @@ function winGame() {
     gameRunning = false; clearInterval(gameInterval); clearInterval(heartInterval);
     document.getElementById('game-message').classList.remove('hidden');
     document.getElementById('game-message-title').innerText = "Bravo ! ✨";
-    document.getElementById('game-message-body').innerText = "Il a survécu à la tempête. Une dernière épreuve...";
+    document.getElementById('game-message-body').innerText = `Incroyable ${playerName} 😳 Il a survécu à la tempête. Dernière épreuve...`;;
     const btn = document.getElementById('game-retry-btn');
     btn.innerText = "Passer à la suite ➜";
     btn.onclick = () => {
@@ -405,8 +418,11 @@ window.addEventListener('keydown', e => {
 
 // --- SUCCÈS ---
 window.showSuccess = () => {
-    showStep('step-success'); createHearts();
-}
+    showStep('step-success');
+    document.getElementById('final-message').innerText =
+        `${playerName}… alors… tu veux être mon ${crushWord} pour de vrai ? 💍💖`;
+    createHearts();
+};
 
 function createHearts() {
     for (let i = 0; i < 40; i++) {
