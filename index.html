@@ -19,23 +19,28 @@
             font-family: 'Pacifico', cursive;
         }
     </style>
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icones/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icones/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icones/favicon-16x16.png">
+    <link rel="manifest" href="assets/icones/site.webmanifest">
+    <meta name="theme-color" content="#ffffff">
 </head>
 
 <body class="bg-rose-50 min-h-screen flex items-center justify-center p-6">
 
     ```
     <div class="bg-white p-8 rounded-3xl shadow-xl max-w-md w-full border border-rose-100 text-center">
-        <h1 class="font-pacifico text-3xl text-rose-600 mb-6">Créer ton lien 💖</h1>
+        <h1 class="font-pacifico text-3xl text-rose-600 mb-6">Créer ton lien pour quequ'un💖</h1>
 
         <form id="linkForm" class="space-y-4 text-left">
             <div>
-                <label class="text-rose-500 font-semibold">Prénom</label>
+                <label class="text-rose-500 font-semibold">Prénom de la personne</label>
                 <input id="nameInput" required type="text" placeholder="Ex: Emma"
                     class="w-full mt-1 p-3 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-300">
             </div>
 
             <div>
-                <label class="text-rose-500 font-semibold">Genre</label>
+                <label class="text-rose-500 font-semibold">Genre de la personne</label>
                 <select id="genderInput"
                     class="w-full mt-1 p-3 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-300">
                     <option value="f">Fille</option>
