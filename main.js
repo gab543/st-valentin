@@ -2,6 +2,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 const playerName = urlParams.get('name') || "toi";
 const gender = urlParams.get('gender') || "x"; // f, m, x
+const from = urlParams.get('sender') || "ton admirateur secret";
 
 // Petits ajustements de texte selon genre
 let crushWord = "mon amour";
@@ -56,6 +57,7 @@ const playlistContainer = document.getElementById('playlist-container');
 const volumeSlider = document.getElementById('volume-slider');
 const menuVolumeSlider = document.getElementById('menu-volume-slider');
 const yesBtnTuto = document.getElementById('yes-btn-tuto');
+const shareBackBtn = document.getElementById('share-back-btn');
 
 const tracks = [
     { id: 'josman', title: "J'aime bien - Josman", url: "assets/music/j-aime-bien.m4a", cover: "assets/covers/josman.jpg" },
@@ -144,7 +146,8 @@ function closeTutorial() {
 
 window.addEventListener('load', () => {
     document.getElementById('main-title').innerText =
-        `${playerName}… veux-tu être ${crushWord} ? 💘`;
+        `${playerName}… veux-tu être ${crushWord} ? 💘`
+    document.querySelector('title').innerText = `${crushWord} ❤️`;
     showTutorial(
         "Épreuve 1 💘",
         "Essaie de cliquer sur NON 😏… ou choisis la bonne réponse 💖"
@@ -422,6 +425,25 @@ window.showSuccess = () => {
     document.getElementById('final-message').innerText =
         `${playerName}… alors… tu veux être mon ${crushWord} pour de vrai ? 💍💖`;
     createHearts();
+
+
+    const message = `J’ai dit OUI ${from} 😳💘`;
+
+    if (navigator.share) {
+        shareBackBtn.onclick = () => {
+            navigator.share({
+                title: "Réponse à ta question 💖",
+                text: message
+            });
+        };
+    } else {
+        // fallback copier
+        shareBackBtn.onclick = () => {
+            navigator.clipboard.writeText(message);
+            shareBackBtn.innerText = "Message copié ! 💖";
+            setTimeout(() => shareBackBtn.innerText = "Lui envoyer ma réponse 💌", 2000);
+        };
+    }
 };
 
 function createHearts() {

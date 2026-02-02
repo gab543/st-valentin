@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Générer un lien Valentine 💘</title>
+    <title>Générer un lien 💘</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap"
@@ -33,6 +33,12 @@
         <h1 class="font-pacifico text-3xl text-rose-600 mb-6">Créer ton lien pour quequ'un💖</h1>
 
         <form id="linkForm" class="space-y-4 text-left">
+            <div>
+                <label class="text-rose-500 font-semibold">Ton prénom</label>
+                <input id="form" required type="text" placeholder=""
+                    class="w-full mt-1 p-3 rounded-xl border border-rose-200 focus:outline-none focus:ring-2 focus:ring-rose-300">
+            </div>
+
             <div>
                 <label class="text-rose-500 font-semibold">Prénom de la personne</label>
                 <input id="nameInput" required type="text" placeholder="Ex: Emma"
@@ -67,7 +73,7 @@
                 </div>
             </div>
 
-            <button id="shareBtn" class="w-full bg-pink-500 text-white py-2 rounded-full font-semibold hidden">
+            <button id="share-back-btn" class="w-full bg-pink-500 text-white py-2 rounded-full font-semibold hidden">
                 Partager 💌
             </button>
         </div>
@@ -80,7 +86,6 @@
         const qrCanvas = document.getElementById('qrCanvas');
         const generatedLinkInput = document.getElementById('generatedLink');
         const copyBtn = document.getElementById('copyBtn');
-        const shareBtn = document.getElementById('shareBtn');
 
         form.addEventListener('submit', e => {
             e.preventDefault();
@@ -89,7 +94,7 @@
             const gender = document.getElementById('genderInput').value;
 
             const base = window.location.origin + window.location.pathname.replace('create-link.html', '');
-            const link = `${base}valentine.html?name=${encodeURIComponent(name)}&gender=${gender}`;
+            const link = `${base}valentine.html?name=${encodeURIComponent(name)}&gender=${gender}&from=${encodeURIComponent(document.getElementById('form').value.trim())}`;
 
             generatedLinkInput.value = link;
             resultSection.classList.remove('hidden');
