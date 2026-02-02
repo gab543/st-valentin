@@ -26,7 +26,7 @@
     <meta name="theme-color" content="#ffffff">
 </head>
 
-<body class="bg-rose-50 min-h-screen flex items-center justify-center p-6">
+<body class="bg-rose-50 min-h-screen flex flex-col items-center justify-center p-6 gap-8">
 
     ```
     <div class="bg-white p-8 rounded-3xl shadow-xl max-w-md w-full border border-rose-100 text-center">
@@ -56,7 +56,7 @@
             </div>
 
             <button type="submit"
-                class="w-full bg-rose-500 text-white py-3 rounded-full font-bold text-lg hover:bg-rose-600 transition">
+                class="w-full bg-gradient-to-r from-rose-500 to-pink-500 text-white py-3 rounded-full font-bold text-lg hover:from-rose-600 hover:to-pink-600 transition shadow-md hover:shadow-lg">
                 Générer ✨
             </button>
         </form>
@@ -69,14 +69,28 @@
                 <p class="text-rose-500 text-sm font-semibold mb-1">Lien à envoyer :</p>
                 <div class="flex gap-2">
                     <input id="generatedLink" readonly class="flex-1 p-2 rounded-lg border border-rose-200 text-sm">
-                    <button id="copyBtn" class="bg-rose-400 text-white px-4 rounded-lg font-bold">Copier</button>
+                    <button id="copyBtn"
+                        class="bg-rose-400 text-white px-4 rounded-lg font-bold hover:bg-rose-500 transition shadow-md">Copier</button>
                 </div>
             </div>
 
-            <button id="share-back-btn" class="w-full bg-pink-500 text-white py-2 rounded-full font-semibold hidden">
+            <button id="share-back-btn"
+                class="w-full bg-gradient-to-r from-pink-400 to-pink-500 text-white py-2 rounded-full font-semibold hidden hover:from-pink-500 hover:to-pink-600 transition shadow-md">
                 Partager 💌
             </button>
         </div>
+    </div>
+    <div
+        class="bg-white p-5 rounded-3xl shadow-xl max-w-md w-full border border-rose-100 text-center flex flex-col gap-3">
+        <a href="https://www.leetchi.com/fr/c/projet-sauvetage-saint-valentin-8358867?utm_source=copylink&utm_medium=social_sharing"
+            target="_blank"
+            class="inline-block bg-rose-200 text-rose-700 py-2 px-4 rounded-full font-medium text-xs hover:bg-rose-300 transition shadow-sm">
+            🌹 Offre-moi une rose pour ma valentine 💘
+        </a>
+        <a href="mailto:gabriel.caboche@gmail.com"
+            class="inline-block bg-rose-200 text-rose-700 py-2 px-4 rounded-full font-medium text-xs hover:bg-rose-300 transition shadow-sm">
+            Tu as d'autres idées ? Tu souhaites simplement me contacter ? Écris-moi ici 💌
+        </a>
     </div>
     ```
 
