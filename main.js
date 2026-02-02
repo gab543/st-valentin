@@ -1,4 +1,3 @@
-
 // --- PERSONNAGE SVG ---
 const getCharacterSVG = (state = 'normal') => {
     const isSad = state === 'sad';
@@ -47,30 +46,10 @@ const volumeSlider = document.getElementById('volume-slider');
 const menuVolumeSlider = document.getElementById('menu-volume-slider');
 
 const tracks = [
-    {
-        id: 'josman',
-        title: "J'aime bien - Josman",
-        url: "assets/music/j-aime-bien.m4a",
-        cover: "assets/covers/josman.jpg"
-    },
-    {
-        id: 'jazz',
-        title: "Jazz Romantique",
-        url: "assets/music/jazz.mp3",
-        cover: "assets/covers/Beats.jpg"
-    },
-    {
-        id: 'lofi',
-        title: "Lofi Calm Vibes",
-        url: "assets/music/lofi.mp3",
-        cover: "assets/covers/LoFi.jpg"
-    },
-    {
-        id: 'calme',
-        title: "Douceur Piano",
-        url: "assets/music/piano.mp3",
-        cover: "assets/covers/Piano.jpg"
-    }
+    { id: 'josman', title: "J'aime bien - Josman", url: "assets/music/j-aime-bien.m4a", cover: "assets/covers/josman.jpg" },
+    { id: 'jazz', title: "Jazz Romantique", url: "assets/music/jazz.mp3", cover: "assets/covers/Beats.jpg" },
+    { id: 'lofi', title: "Lofi Calm Vibes", url: "assets/music/Lofi.mp3", cover: "assets/covers/LoFi.jpg" },
+    { id: 'calme', title: "Douceur Piano", url: "assets/music/piano.mp3", cover: "assets/covers/Piano.jpg" }
 ];
 
 let currentTrackId = 'josman';
@@ -105,9 +84,7 @@ function selectTrack(trackId) {
     document.querySelectorAll('.music-card').forEach(c => c.classList.remove('active'));
     document.getElementById(`track-${trackId}`).classList.add('active');
 
-    if (isPlaying) {
-        audio.play().catch(() => { });
-    }
+    if (isPlaying) audio.play().catch(() => { });
 }
 
 function togglePlayPause() {
@@ -126,31 +103,19 @@ musicToggle.addEventListener('click', () => musicMenu.classList.toggle('open'));
 closeMenu.addEventListener('click', () => musicMenu.classList.remove('open'));
 playPauseBtn.addEventListener('click', togglePlayPause);
 
-// On divise la valeur du slider par 2 pour brider le volume à 0.5 max
-volumeSlider.addEventListener('input', (e) => {
-    const vol = e.target.value * 0.5;
-    audio.volume = vol;
-    menuVolumeSlider.value = e.target.value;
-});
+// Slider volume
+volumeSlider.addEventListener('input', (e) => { const vol = e.target.value * 0.5; audio.volume = vol; menuVolumeSlider.value = e.target.value; });
+menuVolumeSlider.addEventListener('input', (e) => { const vol = e.target.value * 0.5; audio.volume = vol; volumeSlider.value = e.target.value; });
 
-menuVolumeSlider.addEventListener('input', (e) => {
-    const vol = e.target.value * 0.5;
-    audio.volume = vol;
-    volumeSlider.value = e.target.value;
-});
-
-// Init
 audio.src = tracks.find(t => t.id === currentTrackId).url;
-// Volume initial à 0.25 (50% du slider soit 0.5 * 0.5)
 audio.volume = 0.25;
 initPlaylist();
 
-// --- ETAPE 1 : BOUTON QUI FUIT ---
+// --- ÉPREUVE 1 ---
 const noBtn = document.getElementById('no-btn');
 const yesBtn = document.getElementById('yes-btn');
 const attemptsText = document.getElementById('attempts-text');
-let yesScale = 1;
-let attempts = 0;
+let yesScale = 1, attempts = 0;
 
 function moveNoButton() {
     const x = (Math.random() - 0.5) * 400;
@@ -167,12 +132,8 @@ noBtn.addEventListener('mouseenter', moveNoButton);
 noBtn.addEventListener('click', moveNoButton);
 yesBtn.addEventListener('click', () => { showStep('step-2'); startDodgeGame(); });
 
-// --- ETAPE 2 : DODGE HEARTS ---
-let lives = 3;
-let timer = 20;
-let gameInterval;
-let heartInterval;
-let gameRunning = false;
+// --- ÉPREUVE 2 ---
+let lives = 3, timer = 20, gameInterval, heartInterval, gameRunning = false;
 const gameArea = document.getElementById('game-area');
 const player = document.getElementById('player');
 const livesDisplay = document.getElementById('lives-display');
@@ -186,8 +147,7 @@ function startDodgeGame() {
     timerDisplay.innerText = "20s";
     player.innerHTML = getCharacterSVG('normal');
     gameInterval = setInterval(() => {
-        timer--;
-        timerDisplay.innerText = `${timer}s`;
+        timer--; timerDisplay.innerText = `${timer}s`;
         if (timer <= 0) winGame();
     }, 1000);
     heartInterval = setInterval(spawnHeart, 400);
@@ -196,10 +156,8 @@ function startDodgeGame() {
 function spawnHeart() {
     if (!gameRunning) return;
     const heart = document.createElement('div');
-    heart.innerText = "❤️";
-    heart.className = "absolute text-2xl select-none transition-all duration-3000 linear";
-    heart.style.left = (Math.random() * 90 + 5) + "%";
-    heart.style.top = "-50px";
+    heart.innerText = "❤️"; heart.className = "absolute text-2xl select-none transition-all duration-3000 linear";
+    heart.style.left = (Math.random() * 90 + 5) + "%"; heart.style.top = "-50px";
     gameArea.appendChild(heart);
     let top = -50;
     const speed = 2 + Math.random() * 3;
@@ -210,18 +168,14 @@ function spawnHeart() {
         const pRect = player.getBoundingClientRect();
         const hRect = heart.getBoundingClientRect();
         if (hRect.left < pRect.right - 10 && hRect.right > pRect.left + 10 &&
-            hRect.top < pRect.bottom - 10 && hRect.bottom > pRect.top + 10) {
-            loseLife(); heart.remove(); return;
-        }
-        if (top < gameArea.offsetHeight) requestAnimationFrame(animateHeart);
-        else heart.remove();
+            hRect.top < pRect.bottom - 10 && hRect.bottom > pRect.top + 10) { loseLife(); heart.remove(); return; }
+        if (top < gameArea.offsetHeight) requestAnimationFrame(animateHeart); else heart.remove();
     }
     requestAnimationFrame(animateHeart);
 }
 
 function loseLife() {
-    lives--;
-    livesDisplay.innerText = "Vies : " + "❤️".repeat(lives);
+    lives--; livesDisplay.innerText = "Vies : " + "❤️".repeat(lives);
     player.innerHTML = getCharacterSVG('sad');
     setTimeout(() => { if (gameRunning) player.innerHTML = getCharacterSVG('normal'); }, 600);
     if (lives <= 0) gameOver();
@@ -245,18 +199,31 @@ function winGame() {
 }
 
 document.getElementById('game-retry-btn').onclick = () => {
-    document.getElementById('game-message').classList.add('hidden');
-    startDodgeGame();
+    document.getElementById('game-message').classList.add('hidden'); startDodgeGame();
 };
 
-gameArea.addEventListener('mousemove', (e) => {
+// --- Déplacement joueur ---
+gameArea.addEventListener('mousemove', e => {
     const rect = gameArea.getBoundingClientRect();
     let x = e.clientX - rect.left;
     x = Math.max(30, Math.min(rect.width - 30, x));
     player.style.left = x + "px";
 });
 
-// --- ETAPE 3 : LABYRINTHE AMÉLIORÉ ---
+// --- Déplacement tactile mobile ---
+let touchOffsetX = 0;
+gameArea.addEventListener('touchstart', e => {
+    touchOffsetX = e.touches[0].clientX - player.getBoundingClientRect().left;
+});
+gameArea.addEventListener('touchmove', e => {
+    e.preventDefault();
+    const rect = gameArea.getBoundingClientRect();
+    let x = e.touches[0].clientX - rect.left - touchOffsetX + player.offsetWidth / 2;
+    x = Math.max(30, Math.min(rect.width - 30, x));
+    player.style.left = x + "px";
+}, { passive: false });
+
+// --- ÉPREUVE 3 : Labyrinthe ---
 const mazeGrid = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 2, 1, 1, 0, 5, 1, 1, 1, 1, 0],
@@ -277,19 +244,14 @@ const totalHearts = 3;
 
 function initMaze() {
     const container = document.getElementById('maze-container');
-    container.innerHTML = '';
-    collectedHearts = 0;
-    updateHeartMeter();
-
+    container.innerHTML = ''; collectedHearts = 0; updateHeartMeter();
     mazeGrid.forEach((row, r) => {
         row.forEach((cell, c) => {
             const div = document.createElement('div');
             div.className = `w-8 h-8 md:w-12 md:h-12 flex items-center justify-center ${cell === 0 ? 'maze-wall' : 'maze-path'}`;
             div.id = `maze-cell-${r}-${c}`;
-
             if (cell === 3) div.innerHTML = `<span id="exit-icon" class="text-2xl opacity-30 grayscale transition-all">🏠</span>`;
             if (cell === 5) div.innerHTML = `<span class="collectible-pulse text-xl">💖</span>`;
-
             container.appendChild(div);
         });
     });
@@ -299,40 +261,28 @@ function initMaze() {
 function updateHeartMeter() {
     for (let i = 1; i <= totalHearts; i++) {
         const span = document.getElementById(`meter-${i}`);
-        if (i <= collectedHearts) {
-            span.classList.remove('grayscale', 'opacity-30');
-            span.classList.add('scale-125');
-        } else {
-            span.classList.add('grayscale', 'opacity-30');
-            span.classList.remove('scale-125');
-        }
+        if (i <= collectedHearts) { span.classList.remove('grayscale', 'opacity-30'); span.classList.add('scale-125'); }
+        else { span.classList.add('grayscale', 'opacity-30'); span.classList.remove('scale-125'); }
     }
 }
 
 function updatePlayerPos() {
     document.querySelectorAll('.maze-player-container').forEach(el => el.remove());
     const currentCell = mazeGrid[playerPos.r][playerPos.c];
-
     if (currentCell === 5) {
-        mazeGrid[playerPos.r][playerPos.c] = 1;
-        collectedHearts++;
-        updateHeartMeter();
+        mazeGrid[playerPos.r][playerPos.c] = 1; collectedHearts++; updateHeartMeter();
         document.getElementById(`maze-cell-${playerPos.r}-${playerPos.c}`).innerHTML = '';
         if (collectedHearts === totalHearts) {
             document.getElementById('maze-hint').innerText = "Cœur reconstitué ! La sortie est ouverte ! ✨";
             const exit = document.getElementById('exit-icon');
-            exit.classList.remove('opacity-30', 'grayscale');
-            exit.classList.add('scale-125', 'drop-shadow-lg');
+            exit.classList.remove('opacity-30', 'grayscale'); exit.classList.add('scale-125', 'drop-shadow-lg');
         } else {
             document.getElementById('maze-hint').innerText = `Encore ${totalHearts - collectedHearts} éclats !`;
         }
     }
-
     if (currentCell === 3 && collectedHearts === totalHearts) {
-        setTimeout(() => showStep('step-final'), 400);
-        return;
+        setTimeout(() => showStep('step-final'), 400); return;
     }
-
     const pCell = document.getElementById(`maze-cell-${playerPos.r}-${playerPos.c}`);
     const playerContainer = document.createElement('div');
     playerContainer.className = "maze-player-container w-6 h-6 md:w-9 md:h-9 z-10 transition-all";
@@ -342,8 +292,7 @@ function updatePlayerPos() {
 
 window.moveMaze = (dr, dc) => {
     if (document.getElementById('step-3').classList.contains('active')) {
-        const nr = playerPos.r + dr;
-        const nc = playerPos.c + dc;
+        const nr = playerPos.r + dr, nc = playerPos.c + dc;
         if (mazeGrid[nr] && mazeGrid[nr][nc] !== 0) {
             playerPos = { r: nr, c: nc };
             updatePlayerPos();
@@ -351,7 +300,7 @@ window.moveMaze = (dr, dc) => {
     }
 }
 
-window.addEventListener('keydown', (e) => {
+window.addEventListener('keydown', e => {
     if (e.key === 'ArrowUp') moveMaze(-1, 0);
     if (e.key === 'ArrowDown') moveMaze(1, 0);
     if (e.key === 'ArrowLeft') moveMaze(0, -1);
@@ -360,8 +309,7 @@ window.addEventListener('keydown', (e) => {
 
 // --- SUCCÈS ---
 window.showSuccess = () => {
-    showStep('step-success');
-    createHearts();
+    showStep('step-success'); createHearts();
 }
 
 function createHearts() {
@@ -370,8 +318,7 @@ function createHearts() {
             const h = document.createElement('div');
             h.innerText = ["❤️", "💖", "✨", "🌸", "💘"][Math.floor(Math.random() * 5)];
             h.className = "heart-particle text-3xl";
-            h.style.left = Math.random() * 100 + "vw";
-            h.style.top = "-50px";
+            h.style.left = Math.random() * 100 + "vw"; h.style.top = "-50px";
             document.body.appendChild(h);
             const anim = h.animate([
                 { top: '-50px', transform: `rotate(0deg) translateX(0)` },
