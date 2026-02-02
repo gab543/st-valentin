@@ -290,15 +290,62 @@ function updatePlayerPos() {
     pCell.appendChild(playerContainer);
 }
 
-window.moveMaze = (dr, dc) => {
-    if (document.getElementById('step-3').classList.contains('active')) {
-        const nr = playerPos.r + dr, nc = playerPos.c + dc;
-        if (mazeGrid[nr] && mazeGrid[nr][nc] !== 0) {
+
+// --- SWIPE MOBILE LABYRINTHE ---
+let touchStartX = 0;
+let touchStartY = 0;
+
+const mazeContainer = document.getElementById('maze-container');
+
+mazeContainer.addEventListener('touchstart', e => {
+    const t = e.touches[0];
+    touchStartX = t.clientX;
+    touchStartY = t.clientY;
+}, { passive: true });
+
+mazeContainer.addEventListener('touchend', e => {
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchStartX;
+    const dy = t.clientY - touchStartY;
+
+    if (Math.abs(dx) < 30 && Math.abs(dy) < 30) return; // petit mouvement ignoré
+
+    if (Math.abs(dx) > Math.abs(dy)) {
+        // horizontal
+        if (dx > 0) slideMaze(0, 1);   // droite
+        else slideMaze(0, -1);         // gauche
+    } else {
+        // vertical
+        if (dy > 0) slideMaze(1, 0);   // bas
+        else slideMaze(-1, 0);         // haut
+    }
+}, { passive: true });
+
+// Déplacement fluide dans le labyrinthe
+function slideMaze(dr, dc) {
+    if (!document.getElementById('step-3').classList.contains('active')) return;
+
+    let nr = playerPos.r;
+    let nc = playerPos.c;
+
+    function step() {
+        const nextR = nr + dr;
+        const nextC = nc + dc;
+
+        if (mazeGrid[nextR] && mazeGrid[nextR][nextC] !== 0) {
+            nr = nextR;
+            nc = nextC;
             playerPos = { r: nr, c: nc };
             updatePlayerPos();
+            setTimeout(step, 80); // vitesse du slide
         }
     }
+
+    step();
 }
+
+// Garder compatibilité clavier + boutons
+window.moveMaze = slideMaze;
 
 window.addEventListener('keydown', e => {
     if (e.key === 'ArrowUp') moveMaze(-1, 0);
