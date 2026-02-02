@@ -44,6 +44,7 @@ const closeMenu = document.getElementById('close-menu');
 const playlistContainer = document.getElementById('playlist-container');
 const volumeSlider = document.getElementById('volume-slider');
 const menuVolumeSlider = document.getElementById('menu-volume-slider');
+const yesBtnTuto = document.getElementById('yes-btn-tuto');
 
 const tracks = [
     { id: 'josman', title: "J'aime bien - Josman", url: "assets/music/j-aime-bien.m4a", cover: "assets/covers/josman.jpg" },
@@ -112,10 +113,18 @@ audio.volume = 0.25;
 initPlaylist();
 //-- POP-UP TUTORIEL ---
 function showTutorial(title, text) {
-    document.getElementById('tutorial-title').innerText = title;
-    document.getElementById('tutorial-text').innerText = text;
-    document.getElementById('tutorial-popup').classList.remove('hidden');
-    document.getElementById('tutorial-popup').classList.add('flex');
+    return new Promise((resolve) => {
+        document.getElementById('tutorial-title').innerText = title;
+        document.getElementById('tutorial-text').innerText = text;
+        document.getElementById('tutorial-popup').classList.remove('hidden');
+        document.getElementById('tutorial-popup').classList.add('flex');
+
+        // Ajoutez un écouteur d'événements pour fermer le tutoriel
+        document.getElementById('yes-btn-tuto').addEventListener('click', () => {
+            closeTutorial();
+            resolve(); // Résoudre la promesse lorsque le tutoriel est fermé
+        });
+    });
 }
 
 function closeTutorial() {
@@ -130,13 +139,8 @@ window.addEventListener('load', () => {
 });
 
 
-yesBtn.addEventListener('click', () => {
-    showStep('step-2');
-    startDodgeGame();
-    showTutorial(
-        "Épreuve 2 💔",
-        "Déplace le petit ours avec ta souris ou ton doigt et évite les cœurs brisés ! Tiens 10 secondes !"
-    );
+yesBtnTuto.addEventListener('click', () => {
+    closeTutorial();
 });
 
 
@@ -159,7 +163,15 @@ function moveNoButton() {
 
 noBtn.addEventListener('mouseenter', moveNoButton);
 noBtn.addEventListener('click', moveNoButton);
-yesBtn.addEventListener('click', () => { showStep('step-2'); startDodgeGame(); });
+yesBtn.addEventListener('click', () => {
+    showStep('step-2');
+    showTutorial(
+        "Épreuve 2 💔",
+        "Déplace le petit ours avec ta souris ou ton doigt et évite les cœurs brisés ! Tiens 10 secondes !"
+    ).then(() => {
+        startDodgeGame(); // Lancer le jeu après la confirmation du tutoriel
+    });
+});
 
 // --- ÉPREUVE 2 ---
 let lives = 3, timer = 10, gameInterval, heartInterval, gameRunning = false;
