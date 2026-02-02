@@ -110,6 +110,35 @@ menuVolumeSlider.addEventListener('input', (e) => { const vol = e.target.value *
 audio.src = tracks.find(t => t.id === currentTrackId).url;
 audio.volume = 0.25;
 initPlaylist();
+//-- POP-UP TUTORIEL ---
+function showTutorial(title, text) {
+    document.getElementById('tutorial-title').innerText = title;
+    document.getElementById('tutorial-text').innerText = text;
+    document.getElementById('tutorial-popup').classList.remove('hidden');
+    document.getElementById('tutorial-popup').classList.add('flex');
+}
+
+function closeTutorial() {
+    document.getElementById('tutorial-popup').classList.add('hidden');
+}
+
+window.addEventListener('load', () => {
+    showTutorial(
+        "Épreuve 1 💘",
+        "Essaie de cliquer sur NON 😏… ou choisis la bonne réponse 💖"
+    );
+});
+
+
+yesBtn.addEventListener('click', () => {
+    showStep('step-2');
+    startDodgeGame();
+    showTutorial(
+        "Épreuve 2 💔",
+        "Déplace le petit ours avec ta souris ou ton doigt et évite les cœurs brisés ! Tiens 10 secondes !"
+    );
+});
+
 
 // --- ÉPREUVE 1 ---
 const noBtn = document.getElementById('no-btn');
@@ -195,7 +224,15 @@ function winGame() {
     document.getElementById('game-message-body').innerText = "Il a survécu à la tempête. Une dernière épreuve...";
     const btn = document.getElementById('game-retry-btn');
     btn.innerText = "Passer à la suite ➜";
-    btn.onclick = () => { showStep('step-3'); initMaze(); };
+    btn.onclick = () => {
+        showStep('step-3');
+        initMaze();
+        showTutorial(
+            "Épreuve 3 🧩",
+            "Sur téléphone, fais glisser ton doigt pour faire filer le personnage jusqu'au mur. Récupère les 3 cœurs pour ouvrir la sortie !"
+        );
+    };
+    ;
 }
 
 document.getElementById('game-retry-btn').onclick = () => {
@@ -248,7 +285,7 @@ function initMaze() {
     mazeGrid.forEach((row, r) => {
         row.forEach((cell, c) => {
             const div = document.createElement('div');
-            div.className = `w-8 h-8 md:w-12 md:h-12 flex items-center justify-center ${cell === 0 ? 'maze-wall' : 'maze-path'}`;
+            div.className = `w-7 h-7 md:w-12 md:h-12 flex items-center justify-center ${cell === 0 ? 'maze-wall' : 'maze-path'}`;
             div.id = `maze-cell-${r}-${c}`;
             if (cell === 3) div.innerHTML = `<span id="exit-icon" class="text-2xl opacity-30 grayscale transition-all">🏠</span>`;
             if (cell === 5) div.innerHTML = `<span class="collectible-pulse text-xl">💖</span>`;

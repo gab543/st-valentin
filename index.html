@@ -52,6 +52,13 @@
             transition: all 0.2s ease;
         }
 
+        #step-3 {
+            overflow-y: auto;
+            padding-bottom: 120px;
+            /* laisse la place aux boutons */
+        }
+
+
         .heart-particle {
             position: absolute;
             pointer-events: none;
@@ -338,6 +345,16 @@
         </section>
 
     </main>
+    <div id="tutorial-popup"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-[100] p-6">
+        <div
+            class="bg-white max-w-sm w-full rounded-3xl p-6 text-center shadow-2xl border border-rose-200 animate-fadeIn">
+            <h3 id="tutorial-title" class="text-2xl font-pacifico text-rose-600 mb-3"></h3>
+            <p id="tutorial-text" class="text-rose-500 mb-6"></p>
+            <button onclick="closeTutorial()" class="bg-rose-500 text-white px-6 py-2 rounded-full font-bold">J'ai
+                compris 💖</button>
+        </div>
+    </div>
 
     <script type="module" src="main.js"></script>
 </body>
