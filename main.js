@@ -133,7 +133,7 @@ noBtn.addEventListener('click', moveNoButton);
 yesBtn.addEventListener('click', () => { showStep('step-2'); startDodgeGame(); });
 
 // --- ÉPREUVE 2 ---
-let lives = 3, timer = 20, gameInterval, heartInterval, gameRunning = false;
+let lives = 3, timer = 10, gameInterval, heartInterval, gameRunning = false;
 const gameArea = document.getElementById('game-area');
 const player = document.getElementById('player');
 const livesDisplay = document.getElementById('lives-display');
@@ -144,7 +144,7 @@ player.innerHTML = getCharacterSVG();
 function startDodgeGame() {
     lives = 3; timer = 20; gameRunning = true;
     livesDisplay.innerText = "Vies : ❤️❤️❤️";
-    timerDisplay.innerText = "20s";
+    timerDisplay.innerText = "10s";
     player.innerHTML = getCharacterSVG('normal');
     gameInterval = setInterval(() => {
         timer--; timerDisplay.innerText = `${timer}s`;
@@ -156,7 +156,7 @@ function startDodgeGame() {
 function spawnHeart() {
     if (!gameRunning) return;
     const heart = document.createElement('div');
-    heart.innerText = "❤️"; heart.className = "absolute text-2xl select-none transition-all duration-3000 linear";
+    heart.innerText = "💔"; heart.className = "absolute text-2xl select-none transition-all duration-3000 linear";
     heart.style.left = (Math.random() * 90 + 5) + "%"; heart.style.top = "-50px";
     gameArea.appendChild(heart);
     let top = -50;
@@ -184,7 +184,7 @@ function loseLife() {
 function gameOver() {
     gameRunning = false; clearInterval(gameInterval); clearInterval(heartInterval);
     document.getElementById('game-message').classList.remove('hidden');
-    document.getElementById('game-message-title').innerText = "Trop d'amour ! 😵💘";
+    document.getElementById('game-message-title').innerText = "Plus d'amour ! 😵💔";
     document.getElementById('game-message-body').innerText = "Le petit ours a besoin de repos... Réessaie !";
 }
 
