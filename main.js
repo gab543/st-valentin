@@ -142,7 +142,7 @@ const timerDisplay = document.getElementById('timer-display');
 player.innerHTML = getCharacterSVG();
 
 function startDodgeGame() {
-    lives = 3; timer = 20; gameRunning = true;
+    lives = 3; timer = 10; gameRunning = true;
     livesDisplay.innerText = "Vies : ❤️❤️❤️";
     timerDisplay.innerText = "10s";
     player.innerHTML = getCharacterSVG('normal');
