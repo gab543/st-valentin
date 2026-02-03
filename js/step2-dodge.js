@@ -20,29 +20,58 @@ export function startDodgeGame() {
         timer--; timerDisplay.innerText = `${timer}s`;
         if (timer <= 0) winGame();
     }, 1000);
-    heartInterval = setInterval(spawnHeart, 400);
+    heartInterval = setInterval(spawnHeart, 300);
 }
 
 function spawnHeart() {
     if (!gameRunning) return;
+
     const heart = document.createElement('div');
-    heart.innerText = "💔"; heart.className = "absolute text-2xl select-none transition-all duration-3000 linear";
-    heart.style.left = (Math.random() * 90 + 5) + "%"; heart.style.top = "-50px";
+    heart.innerText = "💔";
+    heart.className = "absolute text-2xl select-none pointer-events-none";
+    heart.style.left = (Math.random() * (gameArea.clientWidth - 30)) + "px";
+    heart.style.top = "-40px";
+
     gameArea.appendChild(heart);
-    let top = -50;
+
     const speed = 2 + Math.random() * 3;
+
     function animateHeart() {
-        if (!gameRunning) { heart.remove(); return; }
-        top += speed;
-        heart.style.top = top + "px";
+        if (!gameRunning) {
+            heart.remove();
+            return;
+        }
+
+        const currentTop = heart.offsetTop + speed;
+        heart.style.top = currentTop + "px";
+
         const pRect = player.getBoundingClientRect();
         const hRect = heart.getBoundingClientRect();
-        if (hRect.left < pRect.right - 10 && hRect.right > pRect.left + 10 &&
-            hRect.top < pRect.bottom - 10 && hRect.bottom > pRect.top + 10) { loseLife(); heart.remove(); return; }
-        if (top < gameArea.offsetHeight) requestAnimationFrame(animateHeart); else heart.remove();
+
+        // Collision
+        if (
+            hRect.left < pRect.right - 10 &&
+            hRect.right > pRect.left + 10 &&
+            hRect.top < pRect.bottom - 10 &&
+            hRect.bottom > pRect.top + 10
+        ) {
+            loseLife();
+            heart.remove();
+            return;
+        }
+
+        // 💡 On vérifie la vraie position par rapport à la gameArea
+        const areaRect = gameArea.getBoundingClientRect();
+        if (hRect.top < areaRect.bottom) {
+            requestAnimationFrame(animateHeart);
+        } else {
+            heart.remove();
+        }
     }
+
     requestAnimationFrame(animateHeart);
 }
+
 
 function loseLife() {
     lives--; livesDisplay.innerText = "Vies : " + "❤️".repeat(lives);
